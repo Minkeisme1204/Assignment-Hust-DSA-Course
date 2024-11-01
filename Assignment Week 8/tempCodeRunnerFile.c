@@ -1,13 +1,35 @@
-initNode(node1, "12345678", "John Doe", 1, "123 Main St", "Computer Science", "Computer Science", 1, 1, 1990);
+fgets(line, sizeof(node->studentData->studentID), fp);
+        // stringCopy(line, node->studentData->studentID);
+        // fseek(fp, 1, SEEK_CUR);
 
-    // Node *node2 = createNode();
-    // initNode(node2, "87654321", "Jane Smith", 0, "456 Elm St", "Mathematics", "Mathematics", 25, 12, 1995);
+        // fgets(line, sizeof(node->studentData->name), fp);
+        // stringCopy(line, node->studentData->name);
+        // fseek(fp, 1, SEEK_CUR);
 
-    // Node *node3 = createNode();
-    // initNode(node3, "98765432", "Alice Johnson", 1, "789 Oak St", "Physics", "Physics", 15, 5, 1992);
+        // fgets(line, sizeof(node->studentData->sex), fp);
+        // node->studentData->sex = stringToInt(line);
+        // fseek(fp, 1, SEEK_CUR);
 
-    // Node *node4 = createNode(); 
-    // initNode(node4, "11111111", "Bob Brown", 1, "222 Pine St", "Chemistry", "Chemistry", 30, 9, 1987);
+        // fgets(line, sizeof(node->studentData->dateOfBirth.day), fp);
+        // node->studentData->dateOfBirth.day = stringToInt(line);
+        // fseek(fp, 1, SEEK_CUR);
 
-    // Node *node5 = createNode();
-    
+        // fgets(line, sizeof(node->studentData->dateOfBirth.month), fp);
+        // node->studentData->dateOfBirth.month = stringToInt(line);
+        // fseek(fp, 1, SEEK_CUR);
+
+        // fgets(line, sizeof(node->studentData->dateOfBirth.year), fp);
+        // node->studentData->dateOfBirth.year = stringToInt(line);
+        // fseek(fp, 1, SEEK_CUR);
+
+        // fgets(line, sizeof(node->studentData->address), fp);
+        // stringCopy(line, node->studentData->address);
+        // fseek(fp, 1, SEEK_CUR);
+
+        // fgets(line, sizeof(node->studentData->Class), fp);
+        // stringCopy(line, node->studentData->Class);
+        // fseek(fp, 1, SEEK_CUR);
+
+        // fgets(line, sizeof(node->studentData->major), fp);
+        // stringCopy(line, node->studentData->major);
+        // fseek(fp, 1, SEEK_CUR);
