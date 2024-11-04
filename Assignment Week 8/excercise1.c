@@ -6,7 +6,7 @@ typedef struct Day {
 } Day;  
 
 typedef struct Student {
-    char studentID[8]; 
+    char studentID[9]; 
     char name[50]; 
     int sex;
     Day dateOfBirth;
@@ -52,12 +52,21 @@ void findSameBirthDayStudent(List *list);
 int main(int argc, char **argv) {
     List *list = createList();
 
-    readCSVtoList(list, "StudentList.csv");
+    for (int i = 0; i < 1; i++) {
+        Node *temp = createNode(); 
+        inputNode(temp);
+        addNewNode(list, temp);
+    }
 
     printList(list);
 
-    return 0;
+    sortListByStudentID(list);
+    printList(list);
 
+    findSameBirthDayStudent(list);
+    filterSameBirthDayStudent(list);
+
+    return 0;
 }
 
 Node *createNode() {
@@ -125,10 +134,9 @@ void inputNode(Node *node) {
     }
 
     printf("Enter student ID: ");
-    fgets(node->studentData->studentID, 10, stdin);
+    fgets(node->studentData->studentID, 9, stdin);
 
     printf("Enter name: ");
-    // getchar();
     fgets(node->studentData->name, 50, stdin); 
 
     printf("Enter sex (1: Male, 0: Female): ");
@@ -150,13 +158,13 @@ void inputNode(Node *node) {
 }
 
 void printNode (Node *node) {
-    printf("Student ID: %s\n", node->studentData->studentID);
-    printf("Name: %s\n", node->studentData->name);
+    printf("Student ID: %s", node->studentData->studentID);
+    printf("Name: %s", node->studentData->name);
     printf("Sex: %d\n", node->studentData->sex);
     printf("Date of Birth: %d/%d/%d\n", node->studentData->dateOfBirth.day, node->studentData->dateOfBirth.month, node->studentData->dateOfBirth.year);
-    printf("Address: %s\n", node->studentData->address);
-    printf("Class: %s\n", node->studentData->Class);
-    printf("Major: %s\n", node->studentData->major);
+    printf("Address: %s", node->studentData->address);
+    printf("Class: %s", node->studentData->Class);
+    printf("Major: %s", node->studentData->major);
 }
 
 List *createList() {
@@ -184,24 +192,35 @@ void printList(List *list) {
 }
 
 void sortListByStudentID(List *list) {
-    int i = 0;
-    int j = 0;
-    Node *pCurrent = list->pFirst;
-    while (pCurrent != NULL) {
-        Node *pPre = pCurrent; 
-        Node *pTemp = pCurrent->pNext;
-        while (pTemp != NULL) {
-            if (stringToInt(pCurrent->studentData->studentID) < stringToInt(pTemp->studentData->studentID)) {
-               pCurrent->pNext = pTemp;
-               pPre->pNext = pCurrent;
-            } 
-            else {
-                pPre = pTemp;
-                pTemp = pTemp->pNext;
-            }
-        }
-        pCurrent = pCurrent->pNext;
+    if (list == NULL || list->pFirst == NULL) {
+        return; // Handle empty list case
     }
+
+    Node *sortedList = NULL; // Initialize a new sorted list
+    Node *current = list->pFirst; // Start with the first node
+
+    while (current != NULL) {
+        Node *next = current->pNext; // Save next node
+        // Insert current node into the sorted list
+        if (sortedList == NULL || stringToInt(current->studentData->studentID) < stringToInt(sortedList->studentData->studentID)) {
+            // Insert at the beginning of the sorted list
+            current->pNext = sortedList;
+            sortedList = current;
+        } else {
+            // Find the correct position to insert
+            Node *search = sortedList;
+            while (search->pNext != NULL && stringToInt(search->pNext->studentData->studentID) < stringToInt(current->studentData->studentID)) {
+                search = search->pNext;
+            }
+            // Insert in between search and search->pNext
+            current->pNext = search->pNext;
+            search->pNext = current;
+        }
+        // Move to the next node in the original list
+        current = next;
+    }
+    
+    list->pFirst = sortedList; // Update the original list's head
 }
 
 void freeNode(Node *node) {
@@ -223,6 +242,7 @@ void filterSameBirthDayStudent(List *list) {
     Node *pCurrent = list->pFirst;
     while (pCurrent!= NULL) {
         Node *pTemp = pCurrent->pNext;
+        Node *array[list->len];
         while (pTemp!= NULL) {
             if (pCurrent->studentData->dateOfBirth.day == pTemp->studentData->dateOfBirth.day && 
                 pCurrent->studentData->dateOfBirth.month == pTemp->studentData->dateOfBirth.month && 
@@ -246,6 +266,7 @@ void filterSameBirthDayStudent(List *list) {
 
 void findSameBirthDayStudent(List *list) {
     Node *pCurrent = list->pFirst;
+    int count = 0; 
     while (pCurrent!= NULL) {
         Node *pTemp = pCurrent->pNext;
         while (pTemp!= NULL) {
@@ -255,35 +276,14 @@ void findSameBirthDayStudent(List *list) {
                 printf("Student with same birth day: \n");
                 printNode(pCurrent);
                 printNode(pTemp);
+                count++; 
                 break;
             }
             pTemp = pTemp->pNext;
         }
         pCurrent = pCurrent->pNext;
     }
-}
-
-void readCSVtoList(List *list, char *filename) {
-    FILE *fp = fopen(filename, "r");
-    if (fp == NULL) {
-        printf("Error opening file\n");
-        return;
+    if (count == 0) {
+        printf("No student with same birth day found\n");
     }
-
-    char line[1024];
-    while (!feof(fp)) {
-        Node *node = createNode();
-        fscanf(fp, "%s , %s , %d , %d , %d , %d , %s , %s , %s", 
-        node->studentData->studentID, 
-        node->studentData->name, 
-        &node->studentData->sex, 
-        &node->studentData->dateOfBirth.day, 
-        &node->studentData->dateOfBirth.month,
-        &node->studentData->dateOfBirth.year, 
-        node->studentData->address, 
-        node->studentData->Class, 
-        node->studentData->major);
-
-        addNewNode(list, node);
-    }    
 }
