@@ -36,10 +36,13 @@ int main(int argc, char **argv) {
     Function *g = createList();
     input(f);
     input(g);
+    printf("Function f: ");
     printFunction(f);
+    printf("Function g: ");
     printFunction(g);
 
     Function *h = add2Function(f, g);
+    printf("Function sum of f and g: ");
     printFunction(h);
 
     freeList(f);
@@ -195,7 +198,22 @@ Function *add2Function(Function *f, Function *g) {
 void printFunction(Function *f) {
     if (f == NULL) printf("0"); 
     Node *pTemp = f->pFirst;
-    printf("%.2f*x^%d ", pTemp->data->coefficient, pTemp->data->decimal);
+    if (pTemp->data->decimal != 0) {
+        if (pTemp->data->coefficient > 0) {
+            printf("%.2f*x^%d ", pTemp->data->coefficient, pTemp->data->decimal);
+        }
+        else {
+            printf("- %.2f*x^%d ", -pTemp->data->coefficient, pTemp->data->decimal);
+        }
+    }
+    else {
+            if (pTemp->data->coefficient > 0) {
+            printf("%.2f", pTemp->data->coefficient);
+        }
+        else {
+            printf("- %.2f", -pTemp->data->coefficient);
+        }
+    }
     pTemp = pTemp->pNext;  // Skip the first term to print the rest of the function
     while (pTemp!= NULL) {
         if (pTemp->data->decimal != 0) {
