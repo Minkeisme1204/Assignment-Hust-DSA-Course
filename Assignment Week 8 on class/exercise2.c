@@ -17,7 +17,6 @@ typedef struct List {
     int len;
 } List; 
 
-
 Node *createNode();
 void freeNode(Node *node);
 List *createList();
@@ -68,12 +67,14 @@ Node *createNode(Data data) {
     node->pNext = NULL;
     return node;
 }
+
 void freeNode(Node *node) {
     if (node->data!= NULL) {
         free(node->data);
     }
     free(node);
 }
+
 List *createList() {
     List *list = (List *)malloc(sizeof(List));
     if (list == NULL) {
@@ -85,6 +86,7 @@ List *createList() {
     list->len = 0;
     return list;
 }
+
 void freeList(List *list) {
     Node *node = list->pFirst;
     while (node!= NULL) {
@@ -163,16 +165,16 @@ Function *add2Function(Function *f, Function *g) {
             p2 = p2->pNext;
         }
         else {
-            printf("hello\n");
+            // printf("hello\n");
             if (p1->data->decimal < p2->data->decimal) {
-                printf("hello f\n");
+                // printf("hello f\n");
                 while (p2->data->decimal > p1->data->decimal) {
                     listAddAfter(result, result->pLast, *(p2->data));
                     p2 = p2->pNext;
                 }
             }
             else {
-                printf("hello g\n");
+                // printf("hello g\n");
                 while (p2->data->decimal < p1->data->decimal) {
                     listAddAfter(result, result->pLast, *(p1->data));
                     p1 = p1->pNext;
