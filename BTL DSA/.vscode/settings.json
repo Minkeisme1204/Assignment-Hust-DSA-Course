@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "read_text.h": "c",
+        "system_error": "c",
+        "decoder.h": "c",
+        "encoder.h": "c"
+    }
+}
